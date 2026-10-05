@@ -314,6 +314,8 @@ InnerWidget::InnerWidget(
 	setAccessibleName(tr::lng_recent_chats(tr::now));
 
 	_communityViewable.setRepaint([=] { update(); });
+	windowActiveValue(
+	) | rpl::on_next([=] { update(); }, lifetime());
 
 	style::PaletteChanged(
 	) | rpl::on_next([=] {
@@ -1044,6 +1046,7 @@ void InnerWidget::paintEvent(QPaintEvent *e) {
 		.filter = _filterId,
 		.now = ms,
 		.width = fullWidth,
+		.windowActive = window()->isActiveWindow(),
 		.paused = videoPaused,
 		.narrow = (fullWidth < st::columnMinimalWidthLeft / 2),
 		.insideCommunity = communityModeShown(),

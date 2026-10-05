@@ -7,6 +7,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
 #include "window/section_widget.h"
 
+#include "ui/aquagram/aquagram.h"
+
 #include "mainwidget.h"
 #include "mainwindow.h"
 #include "ui/ui_utility.h"
@@ -392,6 +394,14 @@ void SectionWidget::PaintBackground(
 		QSize fill,
 		QRect clip,
 		bool paused) {
+	if (Ui::Aqua::IsLight()
+		&& !theme->key()
+		&& !Theme::IsNonDefaultBackground()
+		&& Theme::Background()->themeObject().pathAbsolute.isEmpty()
+		&& theme->background().key.isEmpty()) {
+		p.fillRect(clip, st::windowBg);
+		return;
+	}
 	const auto &background = theme->background();
 	if (background.colorForFill) {
 		p.fillRect(clip, *background.colorForFill);

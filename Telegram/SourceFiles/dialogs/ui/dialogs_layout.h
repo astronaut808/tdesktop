@@ -69,6 +69,7 @@ struct PaintContext {
 	crl::time now = 0;
 	QStringView searchLowerText;
 	int width = 0;
+	bool windowActive = false;
 	bool active = false;
 	bool selected = false;
 	bool topicJumpSelected = false;

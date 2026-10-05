@@ -1,0 +1,58 @@
+# This file is part of Telegram Desktop,
+# the official desktop application for the Telegram messaging service.
+#
+# For license and copyright information please follow this link:
+# https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+
+add_executable(test_aquagram EXCLUDE_FROM_ALL WIN32)
+init_target(test_aquagram "(tests)")
+
+target_include_directories(test_aquagram PRIVATE ${src_loc})
+
+nice_target_sources(test_aquagram ${src_loc}
+PRIVATE
+    tests/test_main.cpp
+    tests/test_main.h
+    tests/test_aquagram.cpp
+)
+
+# test_main registers test_text.rcc on macOS. Keep that shared resource name
+# so this standalone harness can use the common entry point unchanged.
+nice_target_sources(test_aquagram ${res_loc}
+PRIVATE
+    qrc/emoji_1.qrc
+    qrc/emoji_2.qrc
+    qrc/emoji_3.qrc
+    qrc/emoji_4.qrc
+    qrc/emoji_5.qrc
+    qrc/emoji_6.qrc
+    qrc/emoji_7.qrc
+    qrc/emoji_8.qrc
+)
+
+target_link_libraries(test_aquagram
+PRIVATE
+    desktop-app::lib_base
+    desktop-app::lib_crl
+    desktop-app::lib_ui
+    desktop-app::external_qt
+    desktop-app::external_qt_static_plugins
+)
+
+set_target_properties(test_aquagram PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+target_prepare_qrc(test_aquagram)
+
+if (APPLE)
+    add_custom_command(TARGET test_aquagram POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+            "$<TARGET_FILE_DIR:test_aquagram>/Contents/Resources"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_BINARY_DIR}/test_aquagram.rcc"
+            "$<TARGET_FILE_DIR:test_aquagram>/Contents/Resources/test_text.rcc"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_BINARY_DIR}/lib_ui.rcc"
+            "$<TARGET_FILE_DIR:test_aquagram>/Contents/Resources/"
+    )
+endif()

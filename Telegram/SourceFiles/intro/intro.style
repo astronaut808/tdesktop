@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
 using "ui/basic.style";
 using "ui/widgets/widgets.style";
+using "ui/aquagram/aquagram.style";
 
 countryRipple: defaultRippleAnimation;
 
@@ -76,13 +77,13 @@ introStepHeightFull: 590px;
 introSlideDuration: 200;
 introCoverDuration: 200;
 
-introNextButton: RoundButton(defaultActiveButton) {
+introNextButton: RoundButton(aquaPrimaryButton) {
 	width: 300px;
-	height: 42px;
+	height: 32px;
 	radius: 6px;
-	textTop: 11px;
+	textTop: 7px;
 	style: TextStyle(semiboldTextStyle) {
-		font: font(boxFontSize semibold);
+		font: font(13px);
 	}
 }
 introFragmentIcon: icon{{ "fragment", activeButtonFg }};

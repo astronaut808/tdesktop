@@ -10,6 +10,7 @@ using "ui/basic.style";
 using "chat_helpers/chat_helpers.style"; // GroupCallUserpics
 using "ui/layers/layers.style"; // boxRoundShadow
 using "ui/widgets/widgets.style";
+using "ui/aquagram/aquagram.style";
 
 DialogRow {
 	height: pixels;
@@ -308,7 +309,7 @@ dialogsSearchFrom: IconButton(dialogsCalendar) {
 	iconOver: icon {{ "dialogs/dialogs_search_from", dialogsMenuIconFgOver }};
 }
 
-dialogsFilter: InputField(defaultInputField) {
+dialogsFilter: InputField(aquaSearchField) {
 	textBg: filterInputInactiveBg;
 	textBgActive: filterInputActiveBg;
 	textMargins: margins(12px, 8px, 30px, 5px);
@@ -321,13 +322,13 @@ dialogsFilter: InputField(defaultInputField) {
 	placeholderShift: -50px;
 	placeholderFont: normalFont;
 
-	borderFg: filterInputInactiveBg;
-	borderFgActive: windowBgRipple;
+	borderFg: inputBorderFg;
+	borderFgActive: activeLineFg;
 	borderFgError: activeLineFgError;
 
 	border: 3px;
 	borderActive: 2px;
-	borderRadius: 18px;
+	borderRadius: 15px;
 	borderDenominator: 2;
 
 	style: defaultTextStyle;

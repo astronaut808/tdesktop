@@ -6,6 +6,7 @@ For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
 using "boxes/boxes.style";
+using "ui/aquagram/aquagram.style";
 
 contactUserIcon: icon {{ "settings/settings_name", menuIconFg }};
 contactPhoneIcon: icon {{ "settings/settings_phone_number", menuIconFg }};
@@ -22,7 +23,5 @@ newGroupLinkTop: 3px;
 newGroupLinkFont: font(16px);
 newGroupNamePosition: point(27px, 5px);
 newGroupDescriptionPadding: margins(0px, 13px, 0px, 4px);
-setupChannelLink: InputField(defaultInputField) {
-	textMargins: margins(0px, 6px, 0px, 4px);
-	heightMin: 32px;
+setupChannelLink: InputField(aquaLinkField) {
 }

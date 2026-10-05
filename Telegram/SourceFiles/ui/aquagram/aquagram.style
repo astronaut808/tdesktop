@@ -1,0 +1,183 @@
+using "ui/widgets/widgets.style";
+
+// Fixed prefixes/suffixes and their editor share the same inset origin.
+aquaPrefixedField: InputField(defaultInputField) {
+	textMargins: margins(5px, 28px, 5px, 4px);
+}
+aquaLinkField: InputField(aquaPrefixedField) {
+	textMargins: margins(5px, 6px, 5px, 4px);
+	heightMin: 32px;
+}
+
+AquaColors {
+	contentPrimary: string;
+	contentSecondary: string;
+	sidebarTint: string;
+	text: string;
+	secondaryText: string;
+	panelBorder: string;
+	separator: string;
+	metalTop: string;
+	metalMiddle: string;
+	metalBottom: string;
+	metalBorder: string;
+	highlight: string;
+	grain: string;
+	blue: string;
+	blueDark: string;
+	selectionTop: string;
+	selectionBottom: string;
+	selectionBorder: string;
+	focus: string;
+	link: string;
+	silverTop: string;
+	silverUpper: string;
+	silverMiddle: string;
+	silverBottom: string;
+	silverBorder: string;
+	blueTop: string;
+	blueUpper: string;
+	blueMiddle: string;
+	blueBottom: string;
+	buttonBorder: string;
+	pressedTop: string;
+	pressedUpper: string;
+	pressedMiddle: string;
+	pressedBottom: string;
+	disabledTop: string;
+	disabledBottom: string;
+	disabledText: string;
+	fieldBorder: string;
+	fieldShadow: string;
+	error: string;
+	available: string;
+	idle: string;
+	away: string;
+	offline: string;
+	busy: string;
+}
+
+aquaColors: AquaColors {
+	contentPrimary: "#ffffff";
+	contentSecondary: "#f4f8fb";
+	sidebarTint: "#edf5fa";
+	text: "#202830";
+	secondaryText: "#526372";
+	panelBorder: "#b8c6d0";
+	separator: "#d5dee5";
+	metalTop: "#eceeef";
+	metalMiddle: "#d6d9db";
+	metalBottom: "#bec3c6";
+	metalBorder: "#8e979d";
+	highlight: "#ffffff";
+	grain: "#a7b0b8";
+	blue: "#3198e8";
+	blueDark: "#1472c4";
+	selectionTop: "#73bdf5";
+	selectionBottom: "#338edc";
+	selectionBorder: "#2476b8";
+	focus: "#3a9bec";
+	link: "#2368b0";
+	silverTop: "#ffffff";
+	silverUpper: "#eef1f3";
+	silverMiddle: "#c7cdd2";
+	silverBottom: "#f5f8fa";
+	silverBorder: "#7f8c97";
+	blueTop: "#bdeaff";
+	blueUpper: "#77c8fb";
+	blueMiddle: "#1589dc";
+	blueBottom: "#7ed5ff";
+	buttonBorder: "#126bb0";
+	pressedTop: "#3e94cd";
+	pressedUpper: "#2381bd";
+	pressedMiddle: "#1364a1";
+	pressedBottom: "#53b4ed";
+	disabledTop: "#f7f8f9";
+	disabledBottom: "#e0e5e9";
+	disabledText: "#7c8791";
+	fieldBorder: "#8998a4";
+	fieldShadow: "#c5cdd3";
+	error: "#c63f37";
+	available: "#62bd42";
+	idle: "#f0b932";
+	away: "#e15d4e";
+	offline: "#aeb7be";
+	busy: "#d84c45";
+}
+
+AquaMetrics {
+	line: pixels;
+	focusInset: pixels;
+	focusWidth: pixels;
+	buttonRadius: pixels;
+	buttonMinHeight: pixels;
+	shadowOffset: pixels;
+	fieldPadding: pixels;
+	fieldRadius: pixels;
+	grainPitch: pixels;
+	presenceDiameter: pixels;
+	presenceHighlight: pixels;
+	upperStop: double;
+	lowerStop: double;
+	focusOpacity: double;
+	grainOpacity: double;
+	disabledOpacity: double;
+	lightThreshold: double;
+}
+
+aquaMetrics: AquaMetrics {
+	line: 1px;
+	focusInset: 2px;
+	focusWidth: 2px;
+	buttonRadius: 6px;
+	buttonMinHeight: 24px;
+	shadowOffset: 1px;
+	fieldPadding: 5px;
+	fieldRadius: 3px;
+	grainPitch: 3px;
+	presenceDiameter: 9px;
+	presenceHighlight: 3px;
+	upperStop: 0.46;
+	lowerStop: 0.50;
+	focusOpacity: 0.32;
+	grainOpacity: 0.025;
+	disabledOpacity: 0.58;
+	lightThreshold: 0.5;
+}
+
+aquaControlText: TextStyle(defaultTextStyle) {
+	font: font(13px);
+}
+
+aquaPrimaryButton: RoundButton(defaultActiveButton) {
+	height: 32px;
+	textTop: 7px;
+	radius: 6px;
+	style: aquaControlText;
+}
+
+aquaPushButton: RoundButton(defaultLightButton) {
+	height: 32px;
+	textTop: 7px;
+	radius: 6px;
+	style: aquaControlText;
+}
+
+aquaSearchField: InputField(defaultInputField) {
+	textBg: filterInputInactiveBg;
+	textBgActive: filterInputActiveBg;
+	textMargins: margins(12px, 7px, 30px, 5px);
+	placeholderFg: placeholderFg;
+	placeholderFgActive: placeholderFgActive;
+	placeholderMargins: margins(5px, 0px, 2px, 0px);
+	placeholderScale: 0.;
+	placeholderShift: -50px;
+	placeholderFont: font(13px);
+	borderFg: inputBorderFg;
+	borderFgActive: activeLineFg;
+	border: 1px;
+	borderActive: 2px;
+	borderRadius: 15px;
+	style: aquaControlText;
+	heightMin: 30px;
+}

@@ -7,6 +7,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
 #include "dialogs/dialogs_widget.h"
 
+#include "ui/aquagram/aquagram.h"
+
 #include "base/call_delayed.h"
 #include "base/qt/qt_key_modifiers.h"
 #include "base/options.h"
@@ -4892,7 +4894,9 @@ void Widget::paintEvent(QPaintEvent *e) {
 		_childListShown.current());
 	auto above = QRect(0, 0, width(), _scroll->y());
 	if (above.intersects(r)) {
-		p.fillRect(above.intersected(r), bg);
+		if (!Ui::Aqua::PaintMetal(p, above)) {
+			p.fillRect(above.intersected(r), bg);
+		}
 	}
 
 	auto belowTop = _scroll->y() + _scroll->height();

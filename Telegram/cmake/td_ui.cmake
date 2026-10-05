@@ -85,6 +85,7 @@ set(style_files
 )
 
 set(dependent_style_files
+    ${src_loc}/ui/aquagram/aquagram.style
     ${submodules_loc}/lib_ui/ui/colors.palette
     ${submodules_loc}/lib_ui/ui/basic.style
     ${submodules_loc}/lib_ui/ui/layers/layers.style

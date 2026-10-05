@@ -113,8 +113,9 @@ void CreateManagedBotBox(
 	const auto fieldSt = box->lifetime().make_state<style::InputField>(
 		st::createBotUsernameField);
 	fieldSt->textMargins.setLeft(
-		st::defaultFlatLabel.style.font->width(botPrefixText));
-	fieldSt->textMargins.setRight(suffixWidth);
+		fieldSt->textMargins.left()
+			+ st::defaultFlatLabel.style.font->width(botPrefixText));
+	fieldSt->textMargins.setRight(fieldSt->textMargins.right() + suffixWidth);
 	fieldSt->placeholderMargins.setLeft(-fieldSt->textMargins.left());
 	fieldSt->placeholderMargins.setRight(-fieldSt->textMargins.right());
 	const auto usernameWrap = box->addRow(object_ptr<Ui::RpWidget>(box));
@@ -154,7 +155,7 @@ void CreateManagedBotBox(
 		const auto textWidth = font->width(text);
 		const auto maxX = username->width() - margin.right();
 		const auto x = std::min(margin.left() + textWidth, maxX);
-		botPrefix->move(0, margin.top());
+		botPrefix->move(st::createBotUsernameField.textMargins.left(), margin.top());
 		botSuffix->move(x, margin.top());
 	};
 
