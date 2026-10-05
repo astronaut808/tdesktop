@@ -104,7 +104,7 @@ def transform(name, text):
     if name in ('ui/widgets/fields/input_field.cpp', 'ui/widgets/fields/masked_input_field.cpp'):
         text = replace_once(text,
             '\tp.setColor(QPalette::HighlightedText, st::historyTextInFgSelected->c);',
-            '\tp.setColor(QPalette::HighlightedText, st::historyTextInFgSelected->c);\n\tAqua::UpdateFieldPalette(p);', name)
+            '\tp.setColor(QPalette::HighlightedText, st::historyTextInFgSelected->c);\n\tAqua::UpdateFieldPalette(p, _st);', name)
     return text
 
 

@@ -21,6 +21,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 #include <QtGui/QFontDatabase>
 #include <QtGui/QFontInfo>
 #include <QtGui/QPainter>
+#include <QtGui/QPalette>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
 #include "styles/style_aquagram.h"
@@ -190,6 +192,74 @@ void Place(QWidget *widget, int x, int y, int width, int height) {
 	widget->show();
 }
 
+void CheckLocalFieldStyles() {
+	Expects(Ui::Aqua::IsLight());
+	const auto dark = style::owned_color(Color(st::aquaColors.blueDark));
+	const auto white = style::owned_color(Color(st::aquaColors.highlight));
+	const auto transparent = style::owned_color(QColor(Qt::transparent));
+	for (const auto background : { transparent.color(), dark.color() }) {
+		auto fieldStyle = st::defaultInputField;
+		fieldStyle.textBg = background;
+		fieldStyle.textFg = white.color();
+		fieldStyle.textMargins = QMargins(scale(2), scale(7), scale(2), 0);
+		fieldStyle.placeholderScale = 0.;
+		Expects(Ui::Aqua::FieldTextMargins(fieldStyle) == fieldStyle.textMargins);
+		auto untouched = QImage(QSize(scale(96), scale(34)),
+			QImage::Format_ARGB32_Premultiplied);
+		untouched.fill(dark.color()->c);
+		auto image = untouched;
+		auto painter = QPainter(&image);
+		Expects(!Ui::Aqua::PaintField(painter, image.rect(), fieldStyle,
+			0., 1., true));
+		painter.end();
+		Expects(image == untouched);
+		auto activeStyle = fieldStyle;
+		activeStyle.textBg = st::windowBg;
+		activeStyle.textBgActive = background;
+		Expects(Ui::Aqua::FieldTextMargins(activeStyle) == activeStyle.textMargins);
+		painter.begin(&image);
+		Expects(!Ui::Aqua::PaintField(painter, image.rect(), activeStyle,
+			0., 1., true));
+		painter.end();
+		Expects(image == untouched);
+		auto palette = QPalette();
+		palette.setColor(QPalette::Window, dark.color()->c);
+		palette.setColor(QPalette::Disabled, QPalette::Text, white.color()->c);
+		Ui::Aqua::UpdateFieldPalette(palette, fieldStyle);
+		Expects(palette.color(QPalette::Disabled, QPalette::Text) == white.color()->c);
+		Ui::Aqua::UpdateFieldPalette(palette, activeStyle);
+		Expects(palette.color(QPalette::Disabled, QPalette::Text) == white.color()->c);
+		auto host = QWidget();
+		host.setPalette(palette);
+		host.setAutoFillBackground(true);
+		host.resize(scale(320), scale(140));
+		auto field = Ui::InputField(&host, fieldStyle, rpl::single(QString()));
+		auto masked = MaskedField(&host, fieldStyle, rpl::single(QString()));
+		Place(&field, 0, 0, 300, 60);
+		Place(&masked, 0, 70, 300, 60);
+		field.setText(u"Local dark field"_q);
+		masked.setText(u"Local dark field"_q);
+		Expects(masked.contentsMargins()
+			== fieldStyle.textMargins + QMargins(-2, -1, -2, -1));
+		Expects(field.rawTextEdit()->palette().color(QPalette::Text)
+			== white.color()->c);
+		Expects(masked.palette().color(QPalette::Text) == white.color()->c);
+		for (const auto widget : { static_cast<QWidget*>(&field),
+				static_cast<QWidget*>(&masked) }) {
+			const auto snapshot = widget->grab().toImage();
+			const auto sample = snapshot.pixelColor(
+				snapshot.width() - scale(20), snapshot.height() / 2);
+			Expects(sample.lightnessF() < st::aquaMetrics.lightThreshold);
+		}
+		const auto renderPath = qEnvironmentVariable("AQUAGRAM_LOCAL_FIELD_RENDER_PATH");
+		if (!renderPath.isEmpty()) {
+			const auto suffix = background->c.alpha() ? u"-dark.png"_q
+				: u"-transparent.png"_q;
+			Expects(host.grab().save(renderPath + suffix, "PNG"));
+		}
+	}
+}
+
 void CheckButtonStates(not_null<Ui::RoundButton*> button) {
 	const auto normal = button->grab().toImage();
 	button->setSynteticOver(true);
@@ -237,6 +307,7 @@ void test(not_null<Ui::RpWindow*>, not_null<Ui::RpWidget*> body) {
 	Expects(family.isEmpty());
 #endif // Q_OS_MAC
 	CheckPainterPrimitives();
+	CheckLocalFieldStyles();
 
 	const auto metal = new Surface(body, Surface::Material::Metal);
 	Place(metal, 0, 0, 800, 64);

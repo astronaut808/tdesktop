@@ -55,6 +55,16 @@ QRectF Inset(QRectF rect, double amount) {
 	return rect.adjusted(amount, amount, -amount, -amount);
 }
 
+bool HasAquaFieldStyle(const style::InputField &style) {
+	const auto lightOpaque = [](const style::color &color) {
+		return color->c.alpha() == 255
+			&& color->c.lightnessF() >= st::aquaMetrics.lightThreshold;
+	};
+	return (style.border || style.borderRadius)
+		&& lightOpaque(style.textBg)
+		&& lightOpaque(style.textBgActive);
+}
+
 QLinearGradient ButtonGradient(QRectF rect, bool primary, bool pressed) {
 	const auto &c = st::aquaColors;
 	auto gradient = QLinearGradient(rect.topLeft(), rect.bottomLeft());
@@ -179,8 +189,8 @@ void ApplyPalette() {
 	SetColor(QLatin1String("topBarBg"), c.metalMiddle);
 }
 
-void UpdateFieldPalette(QPalette &palette) {
-	if (IsLight()) {
+void UpdateFieldPalette(QPalette &palette, const style::InputField &style) {
+	if (IsLight() && HasAquaFieldStyle(style)) {
 		palette.setColor(QPalette::Disabled, QPalette::Text,
 			Color(st::aquaColors.disabledText));
 	}
@@ -254,7 +264,7 @@ double ContentOpacity(bool enabled) {
 
 QMargins FieldTextMargins(const style::InputField &style, bool aqua) {
 	auto margins = style.textMargins;
-	if (aqua && (style.border || style.borderRadius)) {
+	if (aqua && HasAquaFieldStyle(style)) {
 		margins.setLeft(std::max(margins.left(), st::aquaMetrics.fieldPadding));
 		margins.setRight(std::max(margins.right(), st::aquaMetrics.fieldPadding));
 	}
@@ -266,7 +276,7 @@ QMargins ApplyFieldTextMargins(
 		const style::InputField &style,
 		QMargins requested) {
 	widget->setProperty(kFieldMarginsProperty, QVariant::fromValue(requested));
-	if (IsLight() && (style.border || style.borderRadius)) {
+	if (IsLight() && HasAquaFieldStyle(style)) {
 		requested.setLeft(std::max(requested.left(), st::aquaMetrics.fieldPadding));
 		requested.setRight(std::max(requested.right(), st::aquaMetrics.fieldPadding));
 	}
@@ -287,7 +297,7 @@ bool PaintField(
 		double error,
 		double focus,
 		bool enabled) {
-	if (!IsLight() || (!style.border && !style.borderRadius)) {
+	if (!IsLight() || !HasAquaFieldStyle(style)) {
 		return false;
 	}
 	const auto &m = st::aquaMetrics;

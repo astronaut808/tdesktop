@@ -40,6 +40,11 @@ palette API, including imported light themes. This is the fork's intentional
 visual policy; it does not preserve those themes' original foundation colors.
 Dark palettes retain upstream painting and automatic field geometry. Explicit
 Aqua control styles retain their specified dimensions in either palette.
+Fields with explicitly transparent or locally dark backgrounds retain their
+upstream surrounding, margins and disabled-text palette even when the main
+application palette is light. A shared eligibility check covers both field
+classes and all three adaptation points; this preserves white text in dark call
+and story forms without inventing per-screen exceptions.
 Palette changes
 refresh field geometry, including cached masked-field margins. M1 defines the
 requested bright Aqua appearance, not a historical dark-mode variant. Custom
@@ -114,6 +119,10 @@ are not committed because authenticated views contain personal chat data:
 - `m1-main-lucida-retina.jpg`, `m1-buttons-lucida-retina.jpg`,
   `m1-fields-lucida-retina.jpg`: latest Debug after the native-font change,
   with the authenticated main window, shared buttons and focused form fields;
+- `m1-main-after-local-field-fix-retina.jpg`: authenticated main window after
+  the local-field compatibility correction; `m1-local-field-transparent.png`
+  and `m1-local-field-dark.png` are actual two-field toolkit fixtures showing
+  retained white text and transparent/dark backgrounds, not live call screens;
 - `m1-search-focus-retina.jpg`, `m1-search-result-retina.jpg`: focused shared
   search and the result for the test message;
 - `m1-main-multiline-retina.jpg`: multiline composer input;
@@ -161,6 +170,13 @@ margin restoration, Retina snapshots and actual RoundButton state rendering.
 It also verifies one action on release, both Telegram's internal disabled flag
 and Qt's enabled state, and restoration after re-enabling. This caught and fixed
 an initial overlay omission of Telegram's internal disabled flag.
+An additional independent architecture audit identified that the first adapter
+could whiten local dark fields under a global light palette. The regression
+check now covers transparent and opaque dark styles with white text in actual
+InputField and MaskedInputField controls, alongside preserved margins and
+disabled palettes. Light normal backgrounds with dark/transparent active
+backgrounds are also covered. Calls and stories are still not claimed as fully
+tested live.
 
 Exact 1280×800 and 1440×900 main-window captures remain outstanding. The
 native automation could not resize the window; existing captures at other

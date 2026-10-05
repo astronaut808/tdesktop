@@ -22,7 +22,7 @@ enum class Presence { Available, Idle, Away, Offline, Busy };
 [[nodiscard]] bool IsLight();
 void ApplyPalette();
 void WatchFocus(QWidget *widget);
-void UpdateFieldPalette(QPalette &palette);
+void UpdateFieldPalette(QPalette &palette, const style::InputField &style);
 [[nodiscard]] bool PaintButton(
 	QPainter &p,
 	QRect rect,
